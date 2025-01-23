@@ -5,15 +5,14 @@ class Adventurer {
 
       this.x = 100;    // Starting X position
       this.yBase = 300; // Ground-level Y position
-      this.y = this.yBase;
+      this.y = this.yBase; // Character stays grounded
       this.speed = 150; 
-      this.state = "idle"; // Start idle
+      this.state = "idle"; // Start in idle state
 
       // Define animations
       this.animators = {
           idle: new Animator(this.spriteSheet, 0, 0, 32, 32, 1, 1, true),        // Row 1
-          running: new Animator(this.spriteSheet, 0, 37, 32, 32, 6, 0.15, true), // Row 2
-          attacking: new Animator(this.spriteSheet, 0, 148, 32, 32, 6, 0.1, false) // Row 5 (attack)
+          running: new Animator(this.spriteSheet, 0, 37, 32, 32, 6, 0.15, true) // Row 2
       };
 
       this.currentAnimator = this.animators.idle; // Default animation
@@ -25,17 +24,8 @@ class Adventurer {
               // If D is pressed, go to running
               if (this.game.keys["d"] || this.game.keys["D"]) {
                   this.state = "running";
-                  this.currentAnimator = this.animators.running;
-                  this.currentAnimator.elapsedTime = 0;
-              }
-
-              // If there's a click, attack once
-              if (this.game.click) {
-                  this.state = "attacking";
-                  this.currentAnimator = this.animators.attacking;
-                  this.currentAnimator.elapsedTime = 0;
-                  // Prevent resetting attack every frame
-                  this.game.click = false;
+                  this.currentAnimator = this.animators.running;d
+                  this.currentAnimator.elapsedTime = 0; // Reset animation time
               }
 
               // Stay on the ground
@@ -50,29 +40,11 @@ class Adventurer {
                   // Otherwise, back to idle
                   this.state = "idle";
                   this.currentAnimator = this.animators.idle;
-              }
-
-              // If there's a click, attack once
-              if (this.game.click) {
-                  this.state = "attacking";
-                  this.currentAnimator = this.animators.attacking;
-                  this.currentAnimator.elapsedTime = 0;
-                  this.game.click = false;
+                  this.currentAnimator.elapsedTime = 0; // Reset animation time
               }
 
               // Stay on the ground
               this.y = this.yBase;
-              break;
-
-          case "attacking":
-              // Remain on the ground while attacking
-              this.y = this.yBase;
-
-              // Return to idle after the attack animation finishes
-              if (this.currentAnimator.isDone()) {
-                  this.state = "idle";
-                  this.currentAnimator = this.animators.idle;
-              }
               break;
       }
 
