@@ -12,6 +12,6 @@ ASSET_MANAGER.downloadAll(() => {
 
 	const adventurer = new Adventurer(gameEngine);
   gameEngine.addEntity(adventurer);
-
+	
 	gameEngine.start();
 });
